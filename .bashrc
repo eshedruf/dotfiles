@@ -194,3 +194,9 @@ alias tracert='traceroute'
 # alias uptime to uptime -p
 alias uptime='uptime -p'
 
+# free command aliases
+alias bfree='free --bytes'
+alias kfree='free --kilo'
+alias mfree='free --mega'
+alias gfree='free --giga'
+
