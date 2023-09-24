@@ -200,3 +200,6 @@ alias kfree='free --kilo'
 alias mfree='free --mega'
 alias gfree='free --giga'
 
+# alias x to exit
+alias x='exit'
+
