@@ -200,6 +200,30 @@ alias kfree='free --kilo'
 alias mfree='free --mega'
 alias gfree='free --giga'
 
-# alias x to exit
-alias x='exit'
+alias python="python3"
 
+#export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"
+
+# Directories to add
+directories_to_add="/usr/local/sbin /usr/sbin /sbin"
+
+# Splitting the current PATH variable into an array
+IFS=':' read -ra current_path <<< "$PATH"
+
+# Flag to check if any directory needs to be added
+add_flag=0
+
+# Loop through the directories to add
+for dir in $directories_to_add; do
+    # Check if the directory is already in the PATH
+    if [[ ":${PATH}:" != *":${dir}:"* ]]; then
+        # Directory not found in PATH, add it
+        PATH="${PATH}:${dir}"
+        add_flag=1
+    fi
+done
+
+# If any directories were added, update the PATH variable
+if [[ $add_flag -eq 1 ]]; then
+    export PATH
+fi
