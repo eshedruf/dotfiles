@@ -50,7 +50,7 @@ if [ -n "$force_color_prompt" ]; then
         # We have color support; assume it's compliant with Ecma-48
         # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
         # a case would tend to support setf rather than setaf.)
-        color_prompt=yes
+	color_prompt=yes
     else
         color_prompt=
     fi
@@ -200,8 +200,6 @@ alias kfree='free --kilo'
 alias mfree='free --mega'
 alias gfree='free --giga'
 
-alias python="python3"
-
 #export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"
 
 # Directories to add
@@ -227,3 +225,7 @@ done
 if [[ $add_flag -eq 1 ]]; then
     export PATH
 fi
+
+alias aptg="apt-get"
+alias aptc="apt-cache"
+alias aptf="apt-file"
