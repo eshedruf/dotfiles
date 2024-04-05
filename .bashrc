@@ -226,4 +226,4 @@ if [[ $add_flag -eq 1 ]]; then
     export PATH
 fi
 
-alias btop='btop --urf-force'
+alias btop='btop --utf-force'
