@@ -226,6 +226,4 @@ if [[ $add_flag -eq 1 ]]; then
     export PATH
 fi
 
-alias aptg="apt-get"
-alias aptc="apt-cache"
-alias aptf="apt-file"
+alias btop='btop --urf-force'
