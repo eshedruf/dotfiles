@@ -227,3 +227,5 @@ if [[ $add_flag -eq 1 ]]; then
 fi
 
 alias btop='btop --utf-force'
+
+alias aptgrade="sudo apt-get update && sudo apt-get dist-upgrade"
