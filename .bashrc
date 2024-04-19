@@ -229,5 +229,4 @@ fi
 alias btop='btop --utf-force'
 
 alias aptgrade="sudo apt-get update && sudo apt-get dist-upgrade"
-
-alias aptcheck="apt list --upgradable -a"
+alias aptcheck="sudo apt-get update && apt list --upgradable -a"
