@@ -192,7 +192,7 @@ alias less='less -r'
 alias tracert='traceroute'
 
 # alias uptime to uptime -p
-alias uptime='uptime -p'
+alias uptimep='uptime -p'
 
 # free command aliases
 alias bfree='free --bytes'
@@ -228,5 +228,10 @@ fi
 
 alias btop='btop --utf-force'
 
+alias aptdate="sudo apt-get update"
 alias aptgrade="sudo apt-get update && sudo apt-get dist-upgrade"
 alias aptcheck="sudo apt-get update && apt list --upgradable -a"
+alias aptinstall="sudo apt-get install $@"
+alias aptremove="sudo apt-get purge $@"
+
+. "/home/eshed/.cargo/env"
