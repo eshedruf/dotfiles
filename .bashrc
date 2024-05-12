@@ -234,4 +234,18 @@ alias aptcheck="sudo apt-get update && apt list --upgradable -a"
 alias aptinstall="sudo apt-get install $@"
 alias aptremove="sudo apt-get purge $@"
 
+acv() {
+    # Check if .venv directory exists
+    if [ -d ".venv" ]; then
+        echo "Activating .venv..."
+        source .venv/bin/activate
+    # Check if venv directory exists
+    elif [ -d "venv" ]; then
+        echo "Activating venv..."
+        source venv/bin/activate
+    else
+        echo "No virtual environment found."
+    fi
+}
+
 . "/home/eshed/.cargo/env"
