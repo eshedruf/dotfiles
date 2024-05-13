@@ -200,8 +200,6 @@ alias kfree='free --kilo'
 alias mfree='free --mega'
 alias gfree='free --giga'
 
-#export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"
-
 # Directories to add
 directories_to_add="/usr/local/sbin /usr/sbin /sbin"
 
@@ -234,12 +232,14 @@ alias aptcheck="sudo apt-get update && apt list --upgradable -a"
 alias aptinstall="sudo apt-get install $@"
 alias aptremove="sudo apt-get purge $@"
 
+PERSONAL_HOME_DIR="/home/eshed"
+PERSONAL_GITS_DIR="/home/eshed/Documents/gits"
+
+# Activate python venv if exists in current working directory
 acv() {
-    # Check if .venv directory exists
     if [ -d ".venv" ]; then
         echo "Activating .venv..."
         source .venv/bin/activate
-    # Check if venv directory exists
     elif [ -d "venv" ]; then
         echo "Activating venv..."
         source venv/bin/activate
@@ -248,15 +248,17 @@ acv() {
     fi
 }
 
+# Change directory into the personal gits directory
 cdg() {
 	if [ "$#" -eq 0 ]; then
-		cd "/home/eshed/Documents/gits"
+		cd $PERSONAL_GITS_DIR
 	elif [ "$#" -eq 1 ]; then
-		cd "/home/eshed/Documents/gits/$1"
+		cd "$PERSONAL_GITS_DIR/$1"
 	else
 		echo "Too many parameters were given."
 		exit 1
 	fi
 }
 
-. "/home/eshed/.cargo/env"
+. "$PERSONAL_HOME_DIR/.cargo/env"
+
