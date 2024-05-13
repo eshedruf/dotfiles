@@ -248,4 +248,15 @@ acv() {
     fi
 }
 
+cdg() {
+	if [ "$#" -eq 0 ]; then
+		cd "/home/eshed/Documents/gits"
+	elif [ "$#" -eq 1 ]; then
+		cd "/home/eshed/Documents/gits/$1"
+	else
+		echo "Too many parameters were given."
+		exit 1
+	fi
+}
+
 . "/home/eshed/.cargo/env"
