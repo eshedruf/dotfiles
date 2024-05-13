@@ -155,7 +155,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-##### MY ALIASES/VARIABLES #####
+########## MY ADDITIONS ##########
 
 # launch nautilus with current directory shortcut
 alias naupwd='nautilus $(pwd)'
