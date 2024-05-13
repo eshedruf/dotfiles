@@ -191,7 +191,7 @@ alias less='less -r'
 # alias tracert to traceroute
 alias tracert='traceroute'
 
-# alias uptime to uptime -p
+# alias uptimep to uptime -p
 alias uptimep='uptime -p'
 
 # free command aliases
