@@ -264,6 +264,12 @@ cdg() {
 git config --global user.email "eshed.ruf@gmail.com"
 git config --global user.name "Eshed Ruf"
 
+if [ -v XDG_DATA_DIRS ]; then
+	export XDG_DATA_DIRS="$XDG_DATA_DIRS:/var/lib/flatpak/exports/share:/home/eshed/.local/share/flatpak/exports/share"
+fi
+
+alias blackbox-terminal="flatpak run com.raggesilver.BlackBox"
+
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
 fi
