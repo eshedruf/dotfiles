@@ -233,7 +233,7 @@ alias aptinstall="sudo apt-get install $@"
 alias aptremove="sudo apt-get purge $@"
 
 PERSONAL_HOME_DIR="/home/eshed"
-PERSONAL_GITS_DIR="/home/eshed/Documents/gits"
+PERSONAL_GITS_DIR="/home/eshed/Documents/mygits"
 
 # Activate python venv if exists in current working directory
 acv() {
