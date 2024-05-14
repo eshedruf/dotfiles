@@ -245,6 +245,7 @@ acv() {
         source venv/bin/activate
     else
         echo "No virtual environment found."
+		exit 1
     fi
 }
 
@@ -259,6 +260,9 @@ cdg() {
 		exit 1
 	fi
 }
+
+git config --global user.email "eshed.ruf@gmail.com"
+git config --global user.name "Eshed Ruf"
 
 . "$PERSONAL_HOME_DIR/.cargo/env"
 
