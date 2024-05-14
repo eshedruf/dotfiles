@@ -264,5 +264,6 @@ cdg() {
 git config --global user.email "eshed.ruf@gmail.com"
 git config --global user.name "Eshed Ruf"
 
-. "$PERSONAL_HOME_DIR/.cargo/env"
-
+if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
+	. "$PERSONAL_HOME_DIR/.cargo/env"
+fi
