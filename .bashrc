@@ -270,6 +270,8 @@ fi
 
 alias blackbox-terminal="flatpak run com.raggesilver.BlackBox"
 
+alias bat="batcat"
+
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
 fi
