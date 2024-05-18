@@ -272,8 +272,8 @@ alias blackbox-terminal="flatpak run com.raggesilver.BlackBox"
 
 alias bat="batcat"
 
-# for sherlock-project
-export PATH="$PATH:/home/eshed/.local/bin"
+alias publicip="curl ifconfig.me/ip"
+alias privateip="hostname --all-ip-addresses"
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
