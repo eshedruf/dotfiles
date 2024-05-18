@@ -273,7 +273,33 @@ alias blackbox-terminal="flatpak run com.raggesilver.BlackBox"
 alias bat="batcat"
 
 alias publicip="curl ifconfig.me/ip"
-alias privateip="hostname --all-ip-addresses"
+
+privateip() {
+	ip_output=$(ip a)
+
+	wifi_ip=""
+	ethernet_ip=""
+
+	interfaces=$(echo "$ip_output" | awk '/^[0-9]+:/ {print $2}' | cut -d ':' -f 1)
+	for interface in $interfaces; do
+		ip_addr=$(echo "$ip_output" | grep -E "inet [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | grep "$interface" | awk '{print $2}' | cut -d '/' -f 1)
+		if [ -n "$ip_addr" ]; then
+		    case "$interface" in
+		        wlo*|wlan*) wifi_ip=$ip_addr ;;
+		        en*) ethernet_ip=$ip_addr ;;
+		        *) ;;
+		    esac
+		fi
+	done
+
+	if [ -n "$wifi_ip" ] || [ -n "$ethernet_ip" ]; then
+		[ -n "$wifi_ip" ] && echo "Wifi: $wifi_ip"
+		[ -n "$ethernet_ip" ] && echo "Ethernet: $ethernet_ip"
+	else
+		echo "disconnected"
+	fi
+}
+
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
