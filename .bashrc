@@ -245,7 +245,6 @@ acv() {
         source venv/bin/activate
     else
         echo "No virtual environment found."
-		exit 1
     fi
 }
 
@@ -257,7 +256,6 @@ cdg() {
 		cd "$PERSONAL_GITS_DIR/$1"
 	else
 		echo "Too many parameters were given."
-		exit 1
 	fi
 }
 
