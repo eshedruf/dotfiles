@@ -298,6 +298,34 @@ privateip() {
 	fi
 }
 
+# Function to get the creation date of a GitHub repository
+repoc() {
+	local usage="Usage: repoc <username> <repository>"
+
+    if [[ $# -ne 2 ]]; then
+        echo $usage
+        return 1
+    fi
+
+    local user="$1"
+    local repo="$2"
+
+    if [[ -z "$user" || -z "$repo" ]]; then
+        echo $usage
+        return 1
+    fi
+
+    local api_url="https://api.github.com/repos/$user/$repo"
+
+    # Make an API request and extract the creation date
+    creation_date=$(curl -s "$api_url" | grep -oP '"created_at": "\K[^"]+')
+
+    if [[ -z "$creation_date" ]]; then
+        echo "Failed to fetch the creation date. Please check the repository name and try again."
+    else
+        echo "The repository '$user/$repo' was created on: $creation_date"
+    fi
+}
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
