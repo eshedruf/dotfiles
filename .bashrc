@@ -227,7 +227,6 @@ fi
 alias btop='btop --utf-force'
 
 alias aptdate="sudo apt-get update"
-alias aptgrade="sudo apt-get update && sudo apt-get dist-upgrade"
 alias aptcheck="sudo apt-get update && apt list --upgradable -a"
 alias aptinstall="sudo apt-get install $@"
 alias aptremove="sudo apt-get purge $@"
@@ -326,6 +325,27 @@ repoc() {
         echo "The repository '$user/$repo' was created on: $creation_date"
     fi
 }
+
+copyclip() {
+    if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+        echo "$1" | xclip -selection clipboard
+    elif [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+        echo "$1" | wl-copy
+    else
+        echo "Unknown session type. Unable to determine clipboard mechanism."
+    fi
+}
+
+uall() {
+    echo -e "\n\nUpdating APT packages:\n\n"
+    sudo apt-get update -y && \
+    sudo apt-get dist-upgrade -y && \
+    sudo apt-get autoremove --purge -y && \
+
+    echo -e "\n\nUpdating pipx packages:\n\n"
+    pipx upgrade-all
+}
+
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
