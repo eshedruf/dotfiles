@@ -299,15 +299,36 @@ privateip() {
 
 # Function to get the creation date of a GitHub repository
 repoc() {
-	local usage="Usage: repoc <username> <repository>"
+	local usage="Usage: repoc <username/repository | https://github.com/username/repository | github.com/username/repository | username repository>"
 
-    if [[ $# -ne 2 ]]; then
+    if [[ $# -eq 1 ]]; then
+        local input="$1"
+        local user=""
+        local repo=""
+
+        # Extract user and repo from input
+        if [[ "$input" =~ ^https?://github\.com/([^/]+)/([^/]+) ]]; then
+            user="${BASH_REMATCH[1]}"
+            repo="${BASH_REMATCH[2]}"
+        elif [[ "$input" =~ ^github\.com/([^/]+)/([^/]+) ]]; then
+            user="${BASH_REMATCH[1]}"
+            repo="${BASH_REMATCH[2]}"
+        elif [[ "$input" =~ ^([^/]+)/([^/]+)$ ]]; then
+            user="${BASH_REMATCH[1]}"
+            repo="${BASH_REMATCH[2]}"
+        else
+            echo $usage
+            return 1
+        fi
+
+    elif [[ $# -eq 2 ]]; then
+        user="$1"
+        repo="$2"
+
+    else
         echo $usage
         return 1
     fi
-
-    local user="$1"
-    local repo="$2"
 
     if [[ -z "$user" || -z "$repo" ]]; then
         echo $usage
