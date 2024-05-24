@@ -347,6 +347,7 @@ repoc() {
     fi
 }
 
+# Copy text to clipboard
 copyclip() {
     if [ "$XDG_SESSION_TYPE" = "x11" ]; then
         echo "$1" | xclip -selection clipboard
@@ -357,15 +358,49 @@ copyclip() {
     fi
 }
 
+# Full upgrades the system
 uall() {
-    echo -e "\n\nUpdating APT packages:\n\n"
-    sudo apt-get update -y && \
-    sudo apt-get dist-upgrade -y && \
-    sudo apt-get autoremove --purge -y && \
+    update_apt() {
+        sudo apt-get update -y && \
+        sudo apt-get dist-upgrade -y && \
+        sudo apt-get autoremove --purge -y
+    }
 
-    echo -e "\n\nUpdating pipx packages:\n\n"
-    pipx upgrade-all
+    update_pipx() {
+        pipx upgrade-all
+    }
+
+    usage() {
+        echo "Usage: uall [apt|pipx]"
+        return 1
+    }
+
+    if [ $# -gt 1 ]; then
+        usage
+        return 1
+    fi
+
+    case "$1" in
+        apt)
+            echo -e "\n\nUpdating only APT packages:\n\n"
+            update_apt
+            ;;
+        pipx)
+            echo -e "\n\nUpdating only pipx packages:\n\n"
+            update_pipx
+            ;;
+        "")
+            echo -e "\n\nUpdating APT and pipx packages:\n\n"
+            update_apt
+            update_pipx
+            ;;
+        *)
+            usage
+            ;;
+    esac
 }
+
+
 
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
