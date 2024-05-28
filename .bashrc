@@ -232,7 +232,8 @@ alias aptinstall="sudo apt-get install $@"
 alias aptremove="sudo apt-get purge $@"
 
 PERSONAL_HOME_DIR="/home/eshed"
-PERSONAL_GITS_DIR="/home/eshed/Documents/mygits"
+PERSONAL_MYGITS_DIR="/home/eshed/Documents/mygits"
+PERSONAL_OTHERGITS_DIR="/home/eshed/Documents/othergits"
 
 # Activate python venv if exists in current working directory
 acv() {
@@ -247,12 +248,23 @@ acv() {
     fi
 }
 
-# Change directory into the personal gits directory
-cdg() {
+# Change directory into the my gits directory
+cdm() {
 	if [ "$#" -eq 0 ]; then
-		cd $PERSONAL_GITS_DIR
+		cd $PERSONAL_MYGITS_DIR
 	elif [ "$#" -eq 1 ]; then
-		cd "$PERSONAL_GITS_DIR/$1"
+		cd "$PERSONAL_MYGITS_DIR/$1"
+	else
+		echo "Too many parameters were given."
+	fi
+}
+
+# Change directory into the other gits directory
+cdo() {
+    if [ "$#" -eq 0 ]; then
+		cd $PERSONAL_OTHERGITS_DIR
+	elif [ "$#" -eq 1 ]; then
+		cd "$PERSONAL_OTHERGITS_DIR/$1"
 	else
 		echo "Too many parameters were given."
 	fi
