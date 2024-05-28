@@ -400,8 +400,7 @@ uall() {
     esac
 }
 
-
-
+alias batp="bat --paging=never"
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
