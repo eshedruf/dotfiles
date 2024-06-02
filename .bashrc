@@ -284,7 +284,7 @@ alias bat="batcat"
 alias publicip="curl ifconfig.me/ip"
 
 privateip() {
-	ip_output=$(ip a)
+	ip_output=$(ip address)
 
 	wifi_ip=""
 	ethernet_ip=""
@@ -411,8 +411,6 @@ uall() {
             ;;
     esac
 }
-
-alias batp="bat --paging=never"
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
