@@ -157,6 +157,8 @@ fi
 
 ########## MY ADDITIONS ##########
 
+PERSONAL_HOME_DIR="/home/eshed"
+
 # launch nautilus with current directory shortcut
 alias naupwd='nautilus $(pwd)'
 
@@ -201,7 +203,7 @@ alias mfree='free --mega'
 alias gfree='free --giga'
 
 # Directories to add
-directories_to_add="/usr/local/sbin /usr/sbin /sbin"
+directories_to_add="/usr/local/sbin /usr/sbin /sbin $PERSONAL_HOME_DIR/.local/bin"
 
 # Splitting the current PATH variable into an array
 IFS=':' read -ra current_path <<< "$PATH"
@@ -227,11 +229,10 @@ fi
 alias btop='btop --utf-force'
 
 alias aptdate="sudo apt-get update"
-alias aptcheck="sudo apt-get update && apt list --upgradable -a"
+alias aptcheck="sudo apt-get update && apt list --upgradable"
 alias aptinstall="sudo apt-get install $@"
 alias aptremove="sudo apt-get purge $@"
 
-PERSONAL_HOME_DIR="/home/eshed"
 PERSONAL_MYGITS_DIR="/home/eshed/Documents/mygits"
 PERSONAL_OTHERGITS_DIR="/home/eshed/Documents/othergits"
 
