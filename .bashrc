@@ -413,6 +413,8 @@ uall() {
     esac
 }
 
+discord_path="/usr/share/discord/resources/build_info.json"
+
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
 fi
