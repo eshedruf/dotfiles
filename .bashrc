@@ -413,6 +413,27 @@ uall() {
     esac
 }
 
+generals() {
+    if [ "$#" -ne 1 ]; then
+        echo "Usage: generals <server|client>"
+        return 1
+    fi
+
+    case "$1" in
+        s* | se*)  # Match 's', 'se', 'ser', 'serve', etc.
+            /home/eshed/Documents/mygits/generals/.venv/bin/python /home/eshed/Documents/mygits/generals/server/main.py
+            ;;
+        c* | cl*)  # Match 'c', 'cl', 'cli', 'clie', etc.
+            /home/eshed/Documents/mygits/generals/.venv/bin/python /home/eshed/Documents/mygits/generals/client/main.py
+            ;;
+        *)
+            echo "Usage: generals <server|client>"
+            return 1
+            ;;
+    esac
+}
+
+
 discord_path="/usr/share/discord/resources/build_info.json"
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
