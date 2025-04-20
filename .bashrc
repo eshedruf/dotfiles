@@ -413,8 +413,71 @@ uall() {
     esac
 }
 
+# Function to block YouTube by adding a marked block in /etc/hosts
+blockyt() {
+    # Remove any previous YouTube block (if it exists)
+    sudo sed -i '/# BEGIN YOUTUBE BLOCK/,/# END YOUTUBE BLOCK/d' /etc/hosts
+
+    # Append the block with markers to /etc/hosts
+    sudo tee -a /etc/hosts > /dev/null <<EOF
+
+# BEGIN YOUTUBE BLOCK
+127.0.0.1 youtube.com
+127.0.0.1 www.youtube.com
+127.0.0.1 m.youtube.com
+127.0.0.1 youtu.be
+127.0.0.1 music.youtube.com
+# END YOUTUBE BLOCK
+EOF
+
+    echo "YouTube has been blocked."
+}
+
+# ~/.bashrc — add at the end:
+
+# Block a domain (and its subdomains) via dnsmasq
+dnsblock() {
+  if [ -z "$1" ]; then
+    echo "Usage: dnsblock example.com"
+    return 1
+  fi
+  local DOMAIN="$1"
+  local ENTRY="address=/${DOMAIN}/127.0.0.1"
+  if sudo grep -qxF "$ENTRY" /etc/dnsmasq.d/blocklist.conf; then
+    echo "$DOMAIN is already blocked."
+  else
+    echo "Blocking $DOMAIN..."
+    echo "$ENTRY" | sudo tee -a /etc/dnsmasq.d/blocklist.conf >/dev/null
+    sudo systemctl restart dnsmasq && echo "dnsmasq reloaded."
+  fi
+}
+
+# Unblock a domain
+dnsunblock() {
+  if [ -z "$1" ]; then
+    echo "Usage: dnsunblock example.com"
+    return 1
+  fi
+  local DOMAIN="$1"
+  local ENTRY="address=/${DOMAIN}/127.0.0.1"
+  if sudo grep -qxF "$ENTRY" /etc/dnsmasq.d/blocklist.conf; then
+    echo "Unblocking $DOMAIN..."
+    sudo sed -i "\|$ENTRY|d" /etc/dnsmasq.d/blocklist.conf
+    sudo systemctl restart dnsmasq && echo "dnsmasq reloaded."
+  else
+    echo "$DOMAIN is not currently blocked."
+  fi
+}
+
+# List currently blocked domains
+dnslist() {
+  grep -E '^address=/.*?/127\.0\.0\.1' /etc/dnsmasq.d/blocklist.conf || echo "No entries in blocklist."
+}
+
+
 discord_path="/usr/share/discord/resources/build_info.json"
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
 fi
+
