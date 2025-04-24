@@ -413,28 +413,6 @@ uall() {
     esac
 }
 
-# Function to block YouTube by adding a marked block in /etc/hosts
-blockyt() {
-    # Remove any previous YouTube block (if it exists)
-    sudo sed -i '/# BEGIN YOUTUBE BLOCK/,/# END YOUTUBE BLOCK/d' /etc/hosts
-
-    # Append the block with markers to /etc/hosts
-    sudo tee -a /etc/hosts > /dev/null <<EOF
-
-# BEGIN YOUTUBE BLOCK
-127.0.0.1 youtube.com
-127.0.0.1 www.youtube.com
-127.0.0.1 m.youtube.com
-127.0.0.1 youtu.be
-127.0.0.1 music.youtube.com
-# END YOUTUBE BLOCK
-EOF
-
-    echo "YouTube has been blocked."
-}
-
-# ~/.bashrc — add at the end:
-
 # Block a domain (and its subdomains) via dnsmasq
 dnsblock() {
   if [ -z "$1" ]; then
