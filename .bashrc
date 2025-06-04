@@ -413,6 +413,28 @@ uall() {
     esac
 }
 
+# Function to block YouTube by adding a marked block in /etc/hosts
+blockyt() {
+    # Remove any previous YouTube block (if it exists)
+    sudo sed -i '/# BEGIN YOUTUBE BLOCK/,/# END YOUTUBE BLOCK/d' /etc/hosts
+
+    # Append the block with markers to /etc/hosts
+    sudo tee -a /etc/hosts > /dev/null <<EOF
+
+# BEGIN YOUTUBE BLOCK
+127.0.0.1 youtube.com
+127.0.0.1 www.youtube.com
+127.0.0.1 m.youtube.com
+127.0.0.1 youtu.be
+127.0.0.1 music.youtube.com
+# END YOUTUBE BLOCK
+EOF
+
+    echo "YouTube has been blocked."
+}
+
+# ~/.bashrc — add at the end:
+
 # Block a domain (and its subdomains) via dnsmasq
 dnsblock() {
   if [ -z "$1" ]; then
@@ -452,10 +474,91 @@ dnslist() {
   grep -E '^address=/.*?/127\.0\.0\.1' /etc/dnsmasq.d/blocklist.conf || echo "No entries in blocklist."
 }
 
+checkpdf() {
+    local pdf="$1"
+
+    if [[ ! -f "$pdf" ]]; then
+        echo "File not found."
+        return 1
+    fi
+
+    local unsafe_hits=0
+    local potential_hits=0
+
+    echo "=== Checking '$pdf' ==="
+
+    # Check with qpdf (structure validation)
+    if command -v qpdf &>/dev/null; then
+        if ! qpdf --check "$pdf" &>/dev/null; then
+            echo "  [✖] qpdf check failed: corrupted or non-standard PDF."
+            (( unsafe_hits++ ))
+        else
+            echo "  [✓] qpdf: structure looks good."
+        fi
+    else
+        echo "  [!] qpdf not installed (sudo apt install qpdf). Skipping structure check."
+    fi
+
+    # Check metadata with pdfinfo
+    if command -v pdfinfo &>/dev/null; then
+        local encrypted
+        encrypted=$(pdfinfo "$pdf" 2>/dev/null | grep "^Encrypted:" | awk '{print $2}')
+        echo "  [i] PDF Encrypted: $encrypted"
+        if [[ "$encrypted" == "yes" ]]; then
+            echo "  [!] Encrypted PDF — cannot fully analyze. Potentially unsafe."
+            (( potential_hits++ ))
+        fi
+    else
+        echo "  [!] pdfinfo not installed (sudo apt install poppler-utils). Skipping encryption check."
+    fi
+
+    # Scan suspicious tags with strings
+    if strings "$pdf" | grep -q -E '/JavaScript|/JS|/Launch|/EmbeddedFile|/RichMedia'; then
+        echo "  [✖] Found suspicious tags (strings): /JavaScript, /Launch, etc."
+        (( unsafe_hits++ ))
+    else
+        echo "  [✓] No dangerous scripting tags found in strings output."
+    fi
+
+    # Also grep raw content for suspicious tags (extra check)
+    if grep -a -q -E '/JavaScript|/JS|/Launch|/EmbeddedFile|/RichMedia' "$pdf"; then
+        echo "  [✖] Found suspicious tags (raw grep): /JavaScript, /Launch, etc."
+        (( unsafe_hits++ ))
+    else
+        echo "  [✓] No dangerous scripting tags found in raw grep."
+    fi
+
+    # Check for external URIs in strings
+    if strings "$pdf" | grep -q '/URI'; then
+        echo "  [!] Found /URI (external links) — potentially unsafe."
+        (( potential_hits++ ))
+    else
+        echo "  [✓] No /URI links found in strings output."
+    fi
+
+    # Also check external URIs raw
+    if grep -a -q '/URI' "$pdf"; then
+        echo "  [!] Found /URI (external links) — potentially unsafe (raw grep)."
+        (( potential_hits++ ))
+    else
+        echo "  [✓] No /URI links found in raw grep."
+    fi
+
+    echo
+    if (( unsafe_hits > 0 )); then
+        echo ">> FINAL VERDICT: **FOR SURE UNSAFE**"
+        return 2
+    elif (( potential_hits > 0 )); then
+        echo ">> FINAL VERDICT: **POTENTIALLY UNSAFE**"
+        return 1
+    else
+        echo ">> FINAL VERDICT: **SAFE TO USE**"
+        return 0
+    fi
+}
 
 discord_path="/usr/share/discord/resources/build_info.json"
 
 if [ -d "$PERSONAL_HOME_DIR/.cargo" ]; then
 	. "$PERSONAL_HOME_DIR/.cargo/env"
 fi
-
