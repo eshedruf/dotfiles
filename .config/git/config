@@ -1,0 +1,16 @@
+[alias]
+	co = checkout
+	br = branch
+  st = status
+  cm = commit
+  pl = pull
+  ps = push
+
+[pull]
+	rebase = true
+[init]
+	defaultBranch = master
+[user]
+	name = Eshed Ruf
+	email = eshed.ruf@gmail.com
+
